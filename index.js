@@ -26,7 +26,11 @@ app.get("/", (req, res) => {
       const promises = response.data["result"]["content"].map(item => {
         const id = item["id"];
         const event = item["name"];
+        const uri = item["eventURI"]
         const newUrl = `${process.env.SUB_URL_1}${id}${process.env.SUB_URL_2}`;
+        const yepUrl = `https://www.yepdesk.com/${uri}`
+
+        
 
         return axios({
           method,
@@ -41,9 +45,9 @@ app.get("/", (req, res) => {
           const accepted = eventData ? eventData["ACCEPTED"] ?? 0 : 0;
           const submitted = eventData ? eventData["SUBMITTED"] ?? 0 : 0;
           const verified = eventData ? eventData["VERIFIED"] ?? 0 : 0;
-
           dataToPost.push([
             event,
+            yepUrl,
             completed,
             total,
             accepted,
@@ -62,6 +66,7 @@ app.get("/", (req, res) => {
                     <td style="padding: 8px; border: 1px solid #ddd;">${row[3]}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">${row[4]}</td>
                     <td style="padding: 8px; border: 1px solid #ddd;">${row[5]}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${row[5]}</td>
                   </tr>`;
         });
 
@@ -69,6 +74,7 @@ app.get("/", (req, res) => {
                         <thead>
                           <tr style="background-color: #f2f2f2;">
                             <th style="padding: 8px; border: 1px solid #ddd;">Event</th>
+                            <th style="padding: 8px; border: 1px solid #ddd;">Yep desk URL</th>
                             <th style="padding: 8px; border: 1px solid #ddd;">Completed</th>
                             <th style="padding: 8px; border: 1px solid #ddd;">Total</th>
                             <th style="padding: 8px; border: 1px solid #ddd;">Accepted</th>
